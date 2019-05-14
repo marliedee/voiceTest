@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean mStartRecording = true;
 
     private static String fileName;
-    private static EditText name;
+    private EditText name;
 
 
     private Button viewlist;
@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     Audiomemos audiomemo;
-    private static AudioDataBase audioDataBase;
+    private AudioDataBase audioDataBase;
 
 
     private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        name = findViewById(R.id.title_input);
         viewlist =findViewById(R.id.view_button);
         playButton = findViewById(R.id.play);
         recordButton = findViewById(R.id.record);
@@ -62,6 +62,11 @@ public class MainActivity extends AppCompatActivity {
 
         fileName = getExternalCacheDir().getAbsolutePath();
 
+        if(name.getText() == null){
+            fileName = "testString.3gp";
+        }else if(name.getText() != null) {
+            fileName += name.getText().toString() + format + ".3gp";
+        }
         ActivityCompat.requestPermissions(this, permissions, REQUEST_RECORD_AUDIO_PERMISSION);
 
         playButton.setOnClickListener(new View.OnClickListener() {
@@ -85,7 +90,9 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     recordButton.setText("Start recording");
                 }
+
                 mStartRecording = !mStartRecording;
+
             }
 
         });
@@ -100,7 +107,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, ListViewExample.class);
+                intent.putExtra("file", fileName);
                 startActivity(intent);
+
             }
         });
     }
@@ -151,12 +160,11 @@ public class MainActivity extends AppCompatActivity {
         try {
             player.setDataSource(fileName);
             player.prepare();
-            player.start();
         } catch (IOException e) {
             Log.e(LOG_TAG, "prepare() failed");
         }
+        player.start();
     }
-
     private void stopPlaying() {
         player.release();
         player = null;
@@ -166,8 +174,8 @@ public class MainActivity extends AppCompatActivity {
         recorder = new MediaRecorder();
         recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-        recorder.setOutputFile(fileName);
         recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+        recorder.setOutputFile(fileName);
 
         try {
             recorder.prepare();
@@ -175,74 +183,22 @@ public class MainActivity extends AppCompatActivity {
             Log.e(LOG_TAG, "prepare() failed");
         }
         recorder.start();
+
     }
 
     private void stopRecording() {
         recorder.stop();
         recorder.release();
         recorder = null;
-
     }
 
 
     public void addtolist() {
         AudioDataBase audioDataBase = new AudioDataBase(this);
-        name = findViewById(R.id.title_input);
         final String nameInput = name.getText().toString();
         audioDataBase.addAudio(new Audiomemos(nameInput));
-        fileName += name.getText().toString() + format;
-
-        Log.d("list" , nameInput);
+        Log.d("list", nameInput);
     }
-    public void viewListactivity(){
-
-    }
-
-
-//    class RecordButton extends android.support.v7.widget.AppCompatButton {
-//        boolean mStartRecording = true;
-//
-//        OnClickListener clicker = new OnClickListener() {
-//            public void onClick(View v) {
-//                onRecord(mStartRecording);
-//                if (mStartRecording) {
-//                    setText("Stop recording");
-//                } else {
-//                    setText("Start recording");
-//                }
-//                mStartRecording = !mStartRecording;
-//            }
-//        };
-//
-//        public RecordButton(Context ctx) {
-//            super(ctx);
-//            setText("Start recording");
-//            setOnClickListener(clicker);
-//        }
-//    }
-//
-//    class PlayButton extends android.support.v7.widget.AppCompatButton {
-//        boolean mStartPlaying = true;
-//
-//        OnClickListener clicker = new View.OnClickListener() {
-//            public void onClick(View v) {
-//                onPlay(mStartPlaying);
-//                if (mStartPlaying) {
-//                    setText("Stop playing");
-//                } else {
-//                    setText("Start playing");
-//                }
-//                mStartPlaying = !mStartPlaying;
-//            }
-//        };
-//
-//        public PlayButton(Context ctx) {
-//            super(ctx);
-//            setText("Start playing");
-//            setOnClickListener(clicker);
-//        }
-//    }
-
 
 }
 

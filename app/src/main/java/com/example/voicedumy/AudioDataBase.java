@@ -21,9 +21,9 @@ public class AudioDataBase extends SQLiteOpenHelper {
     public AudioDataBase(@Nullable Context context) {
         super(context, DATABASE_NAME, null, SCHEMA_VERSION);
     }
-    public static synchronized AudioDataBase getInstance() {
+    public static synchronized AudioDataBase getInstance(Context context1) {
         if (audioDataBaseInstance == null) {
-            audioDataBaseInstance = new AudioDataBase(context.getApplicationContext());
+            audioDataBaseInstance = new AudioDataBase(context1);
         }
         return audioDataBaseInstance;
     }

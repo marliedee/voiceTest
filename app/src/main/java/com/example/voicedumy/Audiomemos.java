@@ -1,7 +1,5 @@
 package com.example.voicedumy;
 
-import java.sql.Blob;
-
 public class Audiomemos {
     private String filename;
 
