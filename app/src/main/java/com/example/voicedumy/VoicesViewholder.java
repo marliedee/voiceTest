@@ -1,5 +1,6 @@
 package com.example.voicedumy;
 
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -21,7 +22,6 @@ public class VoicesViewholder extends RecyclerView.ViewHolder {
         super(itemView);
         play = itemView.findViewById(R.id.playbuttonInlist);
         name = itemView.findViewById(R.id.name);
-
     }
 
      void onBind(Audiomemos audio) {
