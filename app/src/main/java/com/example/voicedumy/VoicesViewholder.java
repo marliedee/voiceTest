@@ -17,11 +17,13 @@ public class VoicesViewholder extends RecyclerView.ViewHolder {
     private MediaPlayer player;
     private String filename;
     private boolean mStartPlaying = true;
+    IntentListener listener;
 
     public VoicesViewholder(@NonNull View itemView) {
         super(itemView);
         play = itemView.findViewById(R.id.playbuttonInlist);
         name = itemView.findViewById(R.id.name);
+
     }
 
      void onBind(Audiomemos audio) {
@@ -53,15 +55,18 @@ public class VoicesViewholder extends RecyclerView.ViewHolder {
 
     private void startPlaying() {
         player = new MediaPlayer();
+        Log.e("Testing", filename);
         try {
             player.setDataSource(filename);
             player.prepare();
+            player.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer player) {
+                player.start();
+            }});
         } catch (IOException e) {
             Log.e("TAG", "prepare() failed");
-        }
-        player.start();
-    }
-
+        } }
     private void stopPlaying() {
         player.release();
         player = null;

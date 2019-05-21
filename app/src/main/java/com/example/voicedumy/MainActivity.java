@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements IntentListener {
     private static final String LOG_TAG = "AudioRecordTest";
 
     private Button playButton;
@@ -103,12 +103,11 @@ public class MainActivity extends AppCompatActivity {
                 addtolist();
             }
         });
+
         viewlist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, ListViewExample.class);
-                intent.putExtra("file", fileName);
-                startActivity(intent);
+                goToVoiceList();
 
             }
         });
@@ -159,6 +158,7 @@ public class MainActivity extends AppCompatActivity {
         player = new MediaPlayer();
         try {
             player.setDataSource(fileName);
+            Log.e(MainActivity.class.getName(), "startPlaying: " + fileName );
             player.prepare();
         } catch (IOException e) {
             Log.e(LOG_TAG, "prepare() failed");
@@ -195,11 +195,16 @@ public class MainActivity extends AppCompatActivity {
 
     public void addtolist() {
         AudioDataBase audioDataBase = new AudioDataBase(this);
-        final String nameInput = name.getText().toString();
-        audioDataBase.addAudio(new Audiomemos(nameInput));
-        Log.d("list", nameInput);
+        audioDataBase.addAudio(new Audiomemos(fileName));
+        Log.d("list", fileName);
     }
 
+    @Override
+    public void goToVoiceList() {
+        Intent intent = new Intent(MainActivity.this, ListViewExample.class);
+//        intent.putExtra("file", fileName+name.getText().toString() + format + ".3gp");
+        startActivity(intent);
+    }
 }
 
 

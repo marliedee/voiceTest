@@ -16,7 +16,7 @@ import android.widget.TextView;
 import java.io.IOException;
 import java.util.List;
 
-public class ListViewExample extends AppCompatActivity {
+public class ListViewExample extends AppCompatActivity{
     private RecyclerView recyclerView;
     private VoicesAdapter voicesAdapter;
     private List<Audiomemos> audiomemosList;
@@ -32,8 +32,6 @@ public class ListViewExample extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listview);
-        intent = getIntent();
-        newFile = intent.getStringExtra("file");
         playbuttonlist = findViewById(R.id.playbuttonInlist);
         name = findViewById(R.id.name);
         recyclerView = findViewById(R.id.recycler);
